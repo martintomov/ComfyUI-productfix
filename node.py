@@ -61,12 +61,11 @@ class ApplyLatentInjection:
         if isinstance(inject_image_embed, dict):
             inject_image_embed = inject_image_embed["samples"]
         
-        inject_image_embed = inject_image_embed.to(dtype=dtype)
+        inject_image_embed = inject_image_embed.to(device=device, dtype=dtype)
         b, c, h, w = inject_image_embed.shape
         if len(inject_mask.shape) != 4:
             inject_mask = inject_mask.unsqueeze(0)
         
-        inject_image_embed = inject_image_embed.to(device=device, dtype=dtype)
         inject_mask = simple_resize(inject_mask, h, w).to(device=device, dtype=dtype)
         
         latents["samples"] = inject_image_embed

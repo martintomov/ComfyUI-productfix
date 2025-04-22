@@ -45,8 +45,10 @@ def vqmodel_encode(images, vqmodel:VQModel):
     """
     device: torch.device = model_management.get_torch_device()
     offload_device: torch.device = model_management.intermediate_device()
+    
+    # Get the dtype value
     dtype = get_vae_dtype() if vqmodel.dtype is None else vqmodel.dtype
-
+    
     vqmodel.to(device)
     
     # 이미지 전처리 및 인코딩
@@ -69,8 +71,10 @@ def vqmodel_decode(latents, vqmodel:VQModel):
     """
     device: torch.device = model_management.get_torch_device()
     offload_device: torch.device = model_management.intermediate_device()
+    
+    # Get the dtype value
     dtype = get_vae_dtype() if vqmodel.dtype is None else vqmodel.dtype
-
+    
     vqmodel.to(device)
     
     # 잠재 표현 디코딩 및 후처리
