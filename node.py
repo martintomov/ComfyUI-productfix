@@ -6,6 +6,7 @@ from comfy import model_management
 from comfy.model_patcher import ModelPatcher
 from comfy.samplers import KSamplerX0Inpaint
 
+from .aisettings import get_vae_dtype
 from .advanced_sampler import inject_ksamplerx0inpaint_call
 from .ocr import (get_text_mask, get_languages, language_map)
 from .vq import (load_vq_model, vqmodel_encode, vqmodel_decode)
@@ -48,7 +49,7 @@ class ApplyLatentInjection:
 
     def apply_latent_injection(self, model, latents, inject_image_embed, inject_mask, start_sigma, end_sigma, remain_injected=True):
         device = model_management.get_torch_device()
-        dtype = model_management.VAE_DTYPES[0]
+        dtype = get_vae_dtype()
 
         # KSamplerX0Inpaint의 __call__ 메서드를 수정된 버전으로 교체
         original_ksampler_call_fn = KSamplerX0Inpaint.__call__

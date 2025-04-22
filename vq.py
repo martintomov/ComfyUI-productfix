@@ -1,6 +1,7 @@
 import torch
 from comfy import model_management
 from diffusers.models.vq_model import VQModel
+from .aisettings import get_vae_dtype
 
 def load_vq_model(ckpt):
     """
@@ -13,7 +14,7 @@ def load_vq_model(ckpt):
         VQModel: 로드된 VQ 모델
     """
     offload_device: torch.device = model_management.intermediate_device()
-    dtype = model_management.VAE_DTYPES[0]
+    dtype = get_vae_dtype()
 
     model_like = torch.load(ckpt, map_location="cpu")
     
@@ -44,7 +45,7 @@ def vqmodel_encode(images, vqmodel:VQModel):
     """
     device: torch.device = model_management.get_torch_device()
     offload_device: torch.device = model_management.intermediate_device()
-    dtype = vqmodel.dtype
+    dtype = get_vae_dtype() if vqmodel.dtype is None else vqmodel.dtype
 
     vqmodel.to(device)
     
@@ -68,7 +69,7 @@ def vqmodel_decode(latents, vqmodel:VQModel):
     """
     device: torch.device = model_management.get_torch_device()
     offload_device: torch.device = model_management.intermediate_device()
-    dtype = vqmodel.dtype
+    dtype = get_vae_dtype() if vqmodel.dtype is None else vqmodel.dtype
 
     vqmodel.to(device)
     
